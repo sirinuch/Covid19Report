@@ -32,6 +32,7 @@
     <table class="table">
     <thead>
       <tr>
+        <th>ลำดับ</th>
         <th>ชื่อ - นามสกุล</th>
         <th>สถานที่</th>
         <th>สถานะ</th>
@@ -39,17 +40,29 @@
         <th>เวลา</th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <td>สมชาย ทดสอบ</td>
-        <td>อาคารเรียนรวม 1</td>
-        <td></td>
-      </tr>
-      
-    </tbody>
-  </table>
-</div>
-
+<tbody>
+    <?php
+           include("includes/db.php");
+           $ref = "timestamp";
+           $data = $database->getReference($ref)->getValue();
+           $i = 0;
+           foreach($data as $key => $data1){
+               $i++;
+           ?>
+           <tr>
+               <th scope="row"><?php echo $i; ?></th>
+               <td><?php echo $data1['name']; ?></td>
+               <td><?php echo $data1['Place']; ?></td>
+               <td><?php echo $data1['Check']; ?></td>
+               <td><?php echo $data1['date']; ?></td>
+               <td><?php echo $data1['time']; ?></td>
+           </tr>
+           <?php 
+           }
+           ?>
+       </tbody>
+   </table>
+   </div>
+   </div>
 </body>
 </html>
-
