@@ -17,16 +17,19 @@
 </head>
 <body  onload="selectFunction()">
 
-  <div class="container">
+
+
+<div class="container" >
   <h2>Timeline</h2>
-  <div style="text-align:center;"> 
-  <label for="shootdate">รายชื่อกลุ่มเสี่ยง:</label>
+  <label for="shootdate">Date:</label>
 
-  <input type="text" id="shootdate" name="shootdate">
-  <button type="button" onclick="searchFunction()">search</button>
-
+  <input type="date" id="shootdate" name="shootdate">
   
- 
+
+  location
+      <select name="location" id="location" size="">
+        <option value="all">all</option>
+      </select>
 
       
 <!-- <button type="button" onclick="searchFunction()">search</button> -->
@@ -129,7 +132,25 @@ function selectFunction() {
 	</script>
 <script>
 $(document).ready(function() {
-      var table = $('#example').DataTable( {
+    // Setup - add a text input to each footer cell
+    // $('#example thead tr').clone(true).appendTo( '#example thead' );
+
+    // $('#example thead tr:eq(1) th').each( function (i) {
+    //     var title = $(this).text();
+    //     $(this).html( '<input type="date" id ="datepicer" placeholder="Search '+title+'" />' );
+ 
+    //     $( 'input', this ).on( 'keyup change', function () {
+
+    //         if ( table.column(i).search() !== this.value ) {
+    //             table
+    //                 .column(i)
+    //                 .search( this.value )
+    //                 .draw();
+    //         }
+    //     } );
+    // } );
+
+    var table = $('#example').DataTable( {
         orderCellsTop: true,
         fixedHeader: true
     } );  
@@ -142,6 +163,20 @@ $(document).ready(function() {
 
 </script>  
 
+<script>
 
+$(document).ready(function() {
+    var table = $('#example').DataTable( {
+        orderCellsTop: true,
+        fixedHeader: true
+    } );  
+
+    $('#location').on( 'change', function () {
+        // alert(this.value);
+            table.search( this.value ).draw();
+            } );
+    } );
+
+</script>
 </body>
 </html>
