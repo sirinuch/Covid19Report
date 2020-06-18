@@ -15,15 +15,15 @@
 
    
 </head>
-<body  onload="selectFunction()">
+<body>
 
   <div class="container">
   <h2>Timeline</h2>
   <div style="text-align:center;"> 
-  <label for="shootdate">รายชื่อกลุ่มเสี่ยง:</label>
+  <label for="shootdate">ชื่อ:</label>
 
-  <input type="text" id="shootdate" name="shootdate">
-  <button type="button" onclick="searchFunction()">search</button>
+  <input type="text" id="searchname" name="searchname">
+  <button type="button" id="searchbutton">search</button>
 
   
  
@@ -36,48 +36,13 @@
 
 <div class="display" style="width:80%">
 
-<script>
-function selectFunction() {
-  var x = document.getElementById("location");
- 
-  
-
-
-  <?php
-           include("includes/db.php");
-           $ref = "timestamp";
-           $data = $database->getReference($ref)->getValue();
-           $i = 0;
-           foreach($data as $key => $data1){
-               
-
-              $array[$i] = $data1['Place'];
-              //  echo $data1['Place'];
-               $i++;
-           }
-           $arrayuni= array_unique($array);
-
-          $z = 0;
-          foreach($arrayuni as $key => $data2){
-            $z++;
-          // echo  $data2."\n";
-
-         echo "var option".$z." = document.createElement('option');";
-         echo " option".$z.".text = '".$data2."';\n";
-         echo "x.add(option".$z.");\n";
-
-           }
-           ?>
-}
-</script>
 <table id="example" class="display" style="width:100%">
 <thead>
       <tr>
       
         <th>ชื่อ - นามสกุล</th>
-        <th>สถานที่</th>
-        <th>เช็คเข้า</th>
-        <th>เช็คออก</th>
+
+
         
       </tr>
     </thead>
@@ -93,55 +58,125 @@ function selectFunction() {
            $i = 0;
            foreach($data as $key => $data1){
                $i++;
-
-            $CheckIn = $data1['CheckIn'];  
-            $Checkout = $data1['Checkout']; 
-            $newCheckIn = date("yy-m-d", strtotime($CheckIn));  
-            $newCheckout = date("yy-m-d", strtotime($Checkout));  
-
-            // $newCheckIn = date("d F Y / H:i:s", strtotime($CheckIn));  
-            // $newCheckout = date("d F Y / H:i:s", strtotime($Checkout));  
-
-           ?>
-        
-           <tr>
-               
-               <td><?php echo $data1['name']; ?></td>
-               <td><?php echo $data1['Place']; ?></td>
-               <td><?php echo $newCheckIn; ?></td>
-               <td><?php echo $newCheckout; ?></td>
-              
-           </tr>
-           <?php 
+            $arrayname[$i] = $data1['name'];
+            
            }
+           
+           $arrayuni = array_unique($arrayname);
+
+           foreach($arrayuni as $key => $arrayuni1){
+            echo '<tr>';
+            echo '<td>'.$arrayuni1.'</td>';
+            echo '</tr>';
+          
+            }
+
            ?>
        </tbody>
 </table>
+
+<p id="demo"></p>
+
 </div>
 <script>
-	  		$( function() {
-	   			$( "#shootdate" ).datepicker({
-	   				maxDate: 0
-	   			});
-                   $('#example').DataTable();
-                    dataTable.draw();
-                });
-	</script>
-<script>
-$(document).ready(function() {
-      var table = $('#example').DataTable( {
+
+
+  $(document).ready(function() {
+  
+    var table = $('#example').DataTable( {
         orderCellsTop: true,
         fixedHeader: true
     } );  
 
-    $('#shootdate').on( 'change', function () {
-        // alert(this.value);
-            table.search( this.value ).draw();
+    $('#example tbody').on( 'click', 'tr', function () {
+    // console.log( table.row( this ).data() );
+    $name = table.row( this ).data()
+    // console.log($name['0']);
+    Searchbyname($name['0']);
+    } );
+
+    Array.prototype.multiIndexOf = function (el) { 
+            var idxs = [];
+            for (var i = this.length - 1; i >= 0; i--) {
+                if (this[i] === el) {
+                    idxs.unshift(i);
+                }
+            }
+            return idxs;
+        };
+
+
+    <?php
+                include("includes/db.php");
+                $ref = "timestamp";
+                $data = $database->getReference($ref)->getValue();
+                $i = 0;
+                foreach($data as $key => $data1){
+                    $name[$i] = $data1['name'];
+                    $Place[$i] = $data1['Place'];
+                    $CheckIn[$i] = $data1['CheckIn'];  
+                    $Checkout[$i] = $data1['Checkout'];  
+                    $i++;
+                }
+
+                $js_name = json_encode($name ,JSON_UNESCAPED_UNICODE);
+                echo "var javascript_arrayname = ". $js_name . ";\n";
+                $js_Place = json_encode($Place,JSON_UNESCAPED_UNICODE);
+                echo "var javascript_arrayPlace = ". $js_Place . ";\n";
+                $js_CheckIn = json_encode($CheckIn,JSON_UNESCAPED_UNICODE);
+                echo "var javascript_arrayCheckIn = ". $js_CheckIn . ";\n";
+                $js_Checkout = json_encode($Checkout,JSON_UNESCAPED_UNICODE);
+                echo "var javascript_arrayCheckout = ". $js_Checkout . ";\n";
+            ?>
+
+    function Searchbyname(nameSearch){
+        var aindex = javascript_arrayname.multiIndexOf(nameSearch);
+        var rsplace ;
+        allrsplace = [];
+        var rsCheckIn ;
+        allrsCheckIn= [];
+        l=0;
+        
+
+        for(j=0;j<aindex.length;j++){ 
+          $CheckIn = javascript_arrayCheckIn[aindex[j]];
+          $place = javascript_arrayPlace[aindex[j]];
+
+          rsplace = javascript_arrayPlace.multiIndexOf($place);
+          rsCheckIn = javascript_arrayCheckIn.multiIndexOf($CheckIn);
+          // allrsplace.push(rsplace);
+            for(k=0;k<rsplace.length;k++){
+              allrsplace[l] =(rsplace[k]);
+              l++;
+            }
+
+          // allrsplace.push(rsplace);
+          // allrsCheckIn.push(rsCheckIn);
+
+        }
+
+
+ 
+        // document.getElementById("demo").innerHTML = allrsplace;
+        
+        console.dir(allrsplace);
+
+
+        
+    } ;
+
+    $('#searchname').on('keyup', function () {
+    var name = document.getElementById("searchname").value ;
+
+            table
+              .columns( 0 )
+              .search( name )
+              .draw();
+                // console.log(datainArray);
+
             } );
-} );
+    } );
 
-</script>  
-
-
+</script>
 </body>
 </html>

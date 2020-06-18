@@ -124,7 +124,7 @@ function selectFunction() {
 <script>
 	  		$( function() {
 	   			$( "#shootdate" ).datepicker({
-	   				maxDate: 0
+	   				maxDate: 0 
 	   			});
                    $('#example').DataTable();
                     dataTable.draw();
@@ -154,28 +154,35 @@ $(document).ready(function() {
         orderCellsTop: true,
         fixedHeader: true
     } );  
+    var dateselect;
+    var locationselect;
 
     $('#shootdate').on( 'change', function () {
         // alert(this.value);
             table.search( this.value ).draw();
+            dateselect = this.value;
             } );
-} );
-
-</script>  
-
-<script>
-
-$(document).ready(function() {
-    var table = $('#example').DataTable( {
-        orderCellsTop: true,
-        fixedHeader: true
-    } );  
 
     $('#location').on( 'change', function () {
-        // alert(this.value);
-            table.search( this.value ).draw();
+        // alert(dateselect);
+        if(this.value=="all"){
+            locationselect = ""
+        }else{
+            locationselect = this.value;
+        }
+        
+          if(dateselect != null){
+            table.search( dateselect.concat(" ", locationselect) ).draw();
+          }else{
+            table.search( locationselect ).draw();
+          }
+
             } );
-    } );
+
+
+} );
+
+
 
 </script>
 </body>
