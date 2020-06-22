@@ -11,13 +11,12 @@
      <p>Name</p>
      <input type="text" id="nameSearch"></input>
      <button id="searchbutton">Search</button>
-   
-   
 <p id="demo"></p>
 
 <script>
 $(document).ready(function(){
 
+    // mutiIndex ที่ต้องการค้นหา
     Array.prototype.multiIndexOf = function (el) { 
             var idxs = [];
             for (var i = this.length - 1; i >= 0; i--) {

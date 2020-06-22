@@ -12,18 +12,20 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
+    
+    
+    
 
-   
 </head>
 <body  onload="selectFunction()">
 
 
 
 <div class="container" >
-  <h2>Timeline</h2>
+  <h2>Tracking All Member</h2>
   <label for="shootdate">Date:</label>
 
-  <input type="date" id="shootdate" name="shootdate">
+  <input type="date" id="shootdate">
   
 
   location
@@ -52,14 +54,11 @@ function selectFunction() {
            $data = $database->getReference($ref)->getValue();
            $i = 0;
            foreach($data as $key => $data1){
-               
-
               $array[$i] = $data1['Place'];
               //  echo $data1['Place'];
                $i++;
            }
            $arrayuni= array_unique($array);
-
           $z = 0;
           foreach($arrayuni as $key => $data2){
             $z++;
@@ -121,69 +120,64 @@ function selectFunction() {
        </tbody>
 </table>
 </div>
-<script>
-	  		$( function() {
-	   			$( "#shootdate" ).datepicker({
-	   				maxDate: 0 
-	   			});
-                   $('#example').DataTable();
-                    dataTable.draw();
-                });
-	</script>
-<script>
-$(document).ready(function() {
-    // Setup - add a text input to each footer cell
-    // $('#example thead tr').clone(true).appendTo( '#example thead' );
-
-    // $('#example thead tr:eq(1) th').each( function (i) {
-    //     var title = $(this).text();
-    //     $(this).html( '<input type="date" id ="datepicer" placeholder="Search '+title+'" />' );
- 
-    //     $( 'input', this ).on( 'keyup change', function () {
-
-    //         if ( table.column(i).search() !== this.value ) {
-    //             table
-    //                 .column(i)
-    //                 .search( this.value )
-    //                 .draw();
-    //         }
-    //     } );
-    // } );
-
-    var table = $('#example').DataTable( {
-        orderCellsTop: true,
-        fixedHeader: true
-    } );  
-    var dateselect;
-    var locationselect;
-
-    $('#shootdate').on( 'change', function () {
-        // alert(this.value);
-            table.search( this.value ).draw();
-            dateselect = this.value;
-            } );
-
-    $('#location').on( 'change', function () {
-        // alert(dateselect);
-        if(this.value=="all"){
-            locationselect = ""
-        }else{
-            locationselect = this.value;
-        }
+    <script>
+                $( function() {
+                    $("#shootdate" ).datepicker({dateFormat: 'dd-mm-yy' });
+                    $('#example').DataTable();
+                        dataTable.draw();
+                    });
+    </script>
+    <script>
+    $(document).ready(function() {
         
-          if(dateselect != null){
-            table.search( dateselect.concat(" ", locationselect) ).draw();
-          }else{
-            table.search( locationselect ).draw();
-          }
+        $('#example tbody').on( 'click', 'tr', function () {
+        // console.log( table.row( this ).data() );
+        $rowdata = table.row( this ).data()
 
+        table.search( $rowdata['1'].concat(" ", $rowdata['2']) ).draw();
+
+        // console.log($rowdata['0']+ $rowdata['1']+$rowdata['2']);
+    
+        } );
+
+        var table = $('#example').DataTable( {
+            orderCellsTop: true,
+            fixedHeader: true
+        } );  
+        var dateselect;
+        var locationselect;
+
+        $('#shootdate').on( 'change', function () {
+            // alert(this.value);
+            dateselect = this.value;
+            // ตรงนี้ 
+            table.search(this.value).draw();
             } );
 
+        $('#location').on( 'change', function () {
+            // alert(dateselect);
+            if(this.value=="all"){
+                locationselect = ""
+            }else{
+                locationselect = this.value;
+            }
 
-} );
+            if(dateselect != null){
+                table.search( dateselect.concat(" ", locationselect) ).draw();
+            }else{
+                table.search( locationselect ).draw();
+            }
+
+                } );
 
 
+    } );
+    </script>
+    <script>
+        $('#example').collapse({
+        toggle: false
+        })
 
-</script>
+    </script>
 </body>
 </html>
