@@ -173,11 +173,6 @@ function selectFunction() {
 
     } );
     </script>
-    <script>
-        $('#example').collapse({
-        toggle: false
-        })
-
-    </script>
+    
 </body>
 </html>
