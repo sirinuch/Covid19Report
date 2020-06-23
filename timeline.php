@@ -108,6 +108,7 @@
 
 
   $(document).ready(function() {
+    var allrs = 0;
   
     var table = $('#example').DataTable( {
         orderCellsTop: true,
@@ -215,6 +216,7 @@
         const intersection = rsplacearrayspunique.filter(element => rsCheckInarrayspunique.includes(element));
 
         // console.log("intersection : "+intersection);
+        var rsname = [];
         var riskdata = [];
         for(p=0;p<intersection.length;p++){
             riskdata[p] = {
@@ -224,14 +226,13 @@
                   checkin : javascript_arrayCheckIn[intersection[p]],
                   checkout : javascript_arrayCheckout[intersection[p]]
               };
+              rsname[p] =javascript_arrayname[intersection[p]];
 
           }
           
-
           // clear table
           table2.clear().draw();
 
-          var count = 0;
           var int;
           // add data to table
         for(z=0;z<intersection.length;z++){
@@ -242,13 +243,15 @@
                   riskdata[z].checkout
                 ] ).draw( false );
               
-            // console.log(riskdata[z].name);
-            // document.getElementById("demo").innerHTML += riskdata[z].name+"</br>";
-        count++;
-
         }
+        var rsuniname = rsname.filter( aUnique );
 
-        document.getElementById("demo").innerHTML = "จำนวน" + " " + count + " "  + "คน";
+        console.log (rsuniname);
+        console.log (rsuniname.length);
+
+        allrs += rsuniname.length;
+
+        document.getElementById("demo").innerHTML = "จำนวน" + " " + allrs + " "  + "คน";
 
     
       

@@ -39,7 +39,7 @@
 
 
 
-<div class="display" style="width:80%">
+<div class="display" style="width:100%">
 
 <script>
 function selectFunction() {
