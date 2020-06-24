@@ -41,7 +41,7 @@
         <a class="nav-link" href="newtable.php">Members</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">QR Generate</a>
+        <a class="nav-link" href="location.php">Location</a>
       </li>
     </ul>
   </div>
