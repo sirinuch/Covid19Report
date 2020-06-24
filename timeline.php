@@ -80,7 +80,7 @@
                 error_reporting(E_ALL);
                 ini_set("display_errors", 1);
                 
-                include ("../includes/db.php");
+                include ("./includes/db.php");
                 $ref = "timestamp";
                 $data = $database->getReference ( $ref )->getValue ();
 
