@@ -28,7 +28,7 @@
 </head>
 <body onload="selectFunction()">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">COVID-19 Exposure</a>
+  <a class="navbar-brand" href="main.php">COVID-19 Exposure</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -64,6 +64,7 @@
 function selectFunction() {
   var x = document.getElementById("location");
   <?php
+  ini_set('display_errors', 1); ini_set('display_startup_errors', 1); error_reporting(E_ALL);
            include("includes/db.php");
            $ref = "timestamp";
            $data = $database->getReference($ref)->getValue();

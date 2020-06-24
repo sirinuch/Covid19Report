@@ -28,7 +28,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">COVID-19 Exposure</a>
+  <a class="navbar-brand" href="main.php">COVID-19 Exposure</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -48,7 +48,9 @@
 </nav>
 <div class="container">
     <div class="py-2">
-        <!-- ใส่ PHP Code ของหน้าทั้งหมดทั้งมวลตรงนี้นะ -->
+        <div style="text-align:center;">
+          <img src="images/covid.jpg" width="70%">
+        </div>
     </div>
 </div>
 </body>
