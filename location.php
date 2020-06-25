@@ -34,16 +34,13 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="timeline.php">Tracking</a>
-      </li>
-      <li class="nav-item">
         <a class="nav-link" href="newtable.php">Members</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="location.php">Location</a>
+        <a class="nav-link" href="timeline.php">Tracking</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="insert_loc.php">QR Generate</a>
+        <a class="nav-link" href="location.php">Location</a>
       </li>
     </ul>
   </div>
@@ -51,6 +48,7 @@
   
 <div class="container">
   <h2>Location</h2>
+  <a class="btn btn-primary" href="insert_loc.php" role="button">QR Generate</a>
     <table class="table">
     <thead>
       <tr>

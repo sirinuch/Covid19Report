@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Timeline</title>
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"/>
@@ -35,10 +35,10 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="timeline.php">Tracking</a>
+        <a class="nav-link" href="newtable.php">Member</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="newtable.php">Members</a>
+        <a class="nav-link" href="timeline.php">Tracking</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="location.php">Location</a>
@@ -48,14 +48,14 @@
 </nav>
 <div class="container">
     <div class="py-2">
-        <!-- ใส่ PHP Code ของหน้าทั้งหมดทั้งมวลตรงนี้นะ -->
+        
         <div class="container">
     <h2>Timeline</h2>
     <div>
-        <label for="shootdate">ชื่อ:</label>
+        <!-- <label for="shootdate">ชื่อ:</label>
 
         <input type="text" id="searchname" name="searchname">
-        <button type="button" id="searchbutton">search</button>
+        <button type="button" id="searchbutton">search</button> -->
 
 
         <!-- <button type="button" onclick="searchFunction()">search</button> -->
@@ -139,7 +139,7 @@
                         </table>
                         <p id="demo"></p></br></br></br>
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer"> 
 
                     </div>
                 </div>
@@ -147,19 +147,21 @@
         </div>
         <script>
 
-
+                    //แสดงตาราง
             $(document).ready(function () {
 
                 var table = $('#example').DataTable({
                     orderCellsTop: true,
                     // fixedHeader: true
+                    
                 });
 
                 var table2 = $('#table').DataTable({
                     fixedHeader: {
                         header: true,
-                        footer: true
-                    }
+                        footer: true,
+                    },
+                    "order": [[ 3, "desc" ]]
                 });
 
                 $('#example tbody').on('click', 'tr', function () {
@@ -168,7 +170,7 @@
                     // console.log($name['0']);
                     Searchbyname($name['0']);
                 });
-
+                        //ฟังก์ชัน search
                 Array.prototype.multiIndexOf = function (el) {
                     var idxs = [];
                     for (var i = this.length - 1; i >= 0; i--) {
@@ -178,7 +180,7 @@
                     }
                     return idxs;
                 };
-
+                    // ไม่ให้แสดงรายชื่อซ้ำ
                 function aUnique(value, index, self) {
                     return self.indexOf(value) === index;
                 }
@@ -189,8 +191,7 @@
                 $ref = "timestamp";
                 $data = $database->getReference ( $ref )->getValue ();
 
-
-
+                    //ข้อมูลเก็บไว้เป็น array
                 $i = 0;
                 foreach ($data as $key => $data1) {
                     $name[ $i ] = $data1[ 'name' ];
@@ -198,7 +199,8 @@
                     $CheckIn[ $i ] = $data1[ 'CheckIn' ];
                     $Checkout[ $i ] = $data1[ 'Checkout' ];
                     $i++;
-                }
+                  }
+                  // แปลงจาก array เป็น json
                 $js_name = json_encode ( $name , JSON_UNESCAPED_UNICODE );
                 echo "var javascript_arrayname = " . $js_name . ";\n";
                 $js_Place = json_encode ( $Place , JSON_UNESCAPED_UNICODE );
@@ -208,18 +210,21 @@
                 $js_Checkout = json_encode ( $Checkout , JSON_UNESCAPED_UNICODE );
                 echo "var javascript_arrayCheckout = " . $js_Checkout . ";\n";
 
-                //  dateandtime to date
+                //  date and time to date
                 for ($t = 0; $t < count ( $CheckIn ); $t++) {
-                    $CheckInday[ $t ] = date ( "d-m-yy" , strtotime ( $CheckIn[ $t ] ) );
+                    $CheckInday[ $t ] = date ( "dd-mm-yyyy" , strtotime ( $CheckIn[ $t ] ) );
                 }
 
                 $js_CheckInday = json_encode ( $CheckInday , JSON_UNESCAPED_UNICODE );
                 echo "var javascript_arrayCheckInDay = " . $js_CheckInday . ";\n";
                 ?>
 
+
                 function Searchbyname(nameSearch) {
                     $('#exposureModal').modal('show');
-                    $('#exposurePerson').html('ประวัติการเดินทางของ ' + nameSearch);
+                    $('#exposurePerson').html('ประวัติการ Contact ' + nameSearch);
+
+                    
                     var aindex = javascript_arrayname.multiIndexOf(nameSearch);
                     var rsplace, rsplacetext = "";
                     var rsCheckIn, rsCheckIntext = "";
@@ -232,7 +237,7 @@
                         rsCheckIn = javascript_arrayCheckInDay.multiIndexOf($CheckIn);
 
                         for (k = 0; k < rsplace.length; k++) {
-                            if (k == rsplace.length - 1) {
+                            if (k == rsplace.length - 1) { //ถ้าเป็นตัวสุดท้ายจะไม่ต่อด้วย,
                                 rsplacetext = rsplacetext.concat(rsplace[k]);
                             } else {
                                 rsplacetext = rsplacetext.concat(rsplace[k], ",");
@@ -247,6 +252,7 @@
                             }
                         }
                     }
+                   
 
                     var rsplacearraysp = rsplacetext.split(",");
                     var rsCheckInarraysp = rsCheckIntext.split(",");
@@ -254,6 +260,7 @@
                     var rsplacearrayspunique = rsplacearraysp.filter(aUnique);
                     var rsCheckInarrayspunique = rsCheckInarraysp.filter(aUnique);
 
+                        //เช็คสถานที่และเวลา
                     const intersection = rsplacearrayspunique.filter(element => rsCheckInarrayspunique.includes(element));
 
                     // console.log("intersection : "+intersection);
@@ -281,23 +288,27 @@
                     var int;
                     // add data to table
                     for (z = 0; z < intersection.length; z++) {
-                        moment.locale('th');
-                        table2.row.add([
+
+                        if(riskdata[z].name == nameSearch)
+                        {
+                           //donoting
+                        }else{
+                            table2.row.add([
                             riskdata[z].name,
                             riskdata[z].place,
-                            moment(riskdata[z].checkin, "DD MM YYYY hh:mm:ss"),
-                            moment(riskdata[z].checkout, "DD MM YYYY hh:mm:ss")
+                            riskdata[z].checkin, 
+                           riskdata[z].checkout, 
                         ]).draw(false);
-                        console.log(moment().format('LLLL'))
+                        count++;
+
+                        }
                         // console.log(riskdata[z].name);
                         // document.getElementById("demo").innerHTML += riskdata[z].name+"</br>";
-                        count++;
                         exposure.push(riskdata[z].name);
                     }
 
                     let unique = exposure.filter(onlyUnique);
-
-                    document.getElementById("demo").innerHTML = "จำนวน" + " " + unique.length + " " + "คน";
+                    document.getElementById("demo").innerHTML = "จำนวน" + " " + --unique.length + " " + "คน";
 
 
                 }
@@ -312,6 +323,8 @@
                         .draw();
                 });
             });
+
+            
 
         </script>
         <!-- <script>

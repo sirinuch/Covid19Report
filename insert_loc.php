@@ -42,17 +42,15 @@
       <li class="nav-item">
         <a class="nav-link" href="location.php">Location</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="insert_loc.php">QR Generate</a>
-      </li>
     </ul>
   </div>
 </nav>
   
-<div class="container" >
-  <h2>Insert Location</h2>
+<div class="row h-100 justify-content-center align-items-center " >
+  <h2>เพิ่มข้อมูลสถานที่</h2>
    </div>
-   <div class="col-md-9" >
+   <div class="row h-100 justify-content-center align-items-center">
+   <div  class="col-md-9" >
             <form action="add_loc.php" method="post" enctype="multipart/form-data">
        <div class="form-group">
            <label for="exampleFormControlInput1">สถานที่</label>
@@ -64,6 +62,7 @@
        </div>
        <button type="submit" name="push" class="btn btn-primary">Submit</button>
    </form>
+   </div>
    </div>
 </body>
 </html>

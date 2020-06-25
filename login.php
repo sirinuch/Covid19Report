@@ -1,6 +1,6 @@
 <?php
 session_start();
-        if(isset($_POST['Username'])){
+        if(isset($_POST['Username'],$_POST['Password'])){
 				//connection
                   include("connection.php");
 				//รับค่า user & password

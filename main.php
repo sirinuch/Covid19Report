@@ -35,10 +35,10 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="timeline.php">Tracking</a>
+        <a class="nav-link" href="newtable.php">Members</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="newtable.php">Members</a>
+        <a class="nav-link" href="timeline.php">Tracking</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="location.php">Location</a>

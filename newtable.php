@@ -35,10 +35,10 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="timeline.php">Tracking</a>
+        <a class="nav-link" href="newtable.php">Members</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="newtable.php">Members</a>
+        <a class="nav-link" href="timeline.php">Tracking</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="location.php">Location</a>
@@ -50,7 +50,7 @@
     <div class="py-2">
         <!-- ใส่ PHP Code ของหน้าทั้งหมดทั้งมวลตรงนี้นะ -->
         <div class="container-fluid" >
-  <h2>Tracking All Member</h2>
+  <h2>Member</h2>
   <label for="shootdate">Date:</label>
   <input type="date" id="shootdate">
   location
@@ -157,8 +157,11 @@ function selectFunction() {
 
         var table = $('#example').DataTable( {
             orderCellsTop: true,
-            fixedHeader: true
+            fixedHeader: true,
+            "order": [[ 3, "desc" ]]
+            
         } );  
+        
         var dateselect;
         var locationselect;
 
