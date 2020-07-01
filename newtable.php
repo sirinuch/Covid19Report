@@ -11,6 +11,7 @@
           href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.dataTables.min.css"/>
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <!-- <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> -->
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.js"></script>
 
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
@@ -48,15 +49,22 @@
 </nav>
 <div class="container">
     <div class="py-2">
-        <!-- ใส่ PHP Code ของหน้าทั้งหมดทั้งมวลตรงนี้นะ -->
+       
         <div class="container-fluid" >
-  <h2>Member</h2>
-  <label for="shootdate">Date:</label>
-  <input type="date" id="shootdate">
+  <h2>รายชื่อสมาชิกทั้งหมด</h2>
+  <div class="modal-body">
+                    <label for="enddate">วันที่</label>
+                    <input type="date" id="enddate">
+
+                    <label for="startdate">ถึง </label>
+                    <input type="date" id="startdate">
+  
   location
       <select name="location" id="location" size="">
         <option value="all">all</option>
-      </select>    
+      </select>   
+
+    </div> 
 <!-- <button type="button" onclick="searchFunction()">search</button> -->
 </br></br>
 <div class="display" style="">
@@ -136,13 +144,20 @@ function selectFunction() {
 </table>
 </div>
     <script>
-                $( function() {
-                    $("#shootdate" ).datepicker({dateFormat: 'dd-mm-yy' });
-                    $('#example').DataTable();
-                        dataTable.draw();
-                    });
-    </script>
-    <script>
+
+            Date.prototype.stdate = (function() {
+                var local = new Date(this);
+                local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+                return local.toJSON().slice(0,10);
+            });
+            
+            Date.prototype.endate = (function() {
+                var dateoutput = new Date();
+                dateoutput.setDate(dateoutput.getDate() - 14);
+                return dateoutput.toJSON().slice(0,10);
+            });
+
+
     $(document).ready(function() {
         
         $('#example tbody').on( 'click', 'tr', function () {
@@ -162,32 +177,49 @@ function selectFunction() {
             
         } );  
         
-        var dateselect;
-        var locationselect;
+                 
+                $('#startdate').val(new Date().stdate());
+                $('#enddate').val(new Date().endate());
+       
+                $('#startdate, #enddate').on('change', function() {
+                    var startdate = document.getElementById("startdate").value;
+                    var enddate = document.getElementById("enddate").value;
 
-        $('#shootdate').on( 'change', function () {
-            // alert(this.value);
-            dateselect = this.value;
-            // ตรงนี้ 
-            table.search(this.value).draw();
-            } );
+                    var startdateaf = moment(startdate , "YYYY-MM-DD").format("DD/MM/YYYY");
+                    var enddateaf = moment(enddate , "YYYY-MM-DD").format("DD/MM/YYYY");
+                    
+                    //moment หา array ปี/เดือน/วัน
+                    var a = moment(moment(startdate , "YYYY-MM-DD").toArray());
+                    var b = moment(moment(enddate , "YYYY-MM-DD").toArray());
 
-        $('#location').on( 'change', function () {
-            // alert(dateselect);
-            if(this.value=="all"){
-                locationselect = ""
-            }else{
-                locationselect = this.value;
-            }
+                    var mDate = "";
 
-            if(dateselect != null){
-                table.search( dateselect.concat(" ", locationselect) ).draw();
-            }else{
-                table.search( locationselect ).draw();
-            }
+                    var diffday = a.diff(b, 'days');
+                    var stdate;
+                    
+                        if(diffday< 0){
+                            // แจ้งเตื่อน วันที่ เริ่ม น้อยกว่า จบ
+                            alert("กรุณาเลือกวันที่ให้ถูกต้อง");
+                        }
+                    for(stdate = 0 ;stdate <= diffday ; stdate++){
 
+                    // console.log(moment(b).format("DD/MM/YYYY") );
+
+                            if (stdate == diffday) { //ถ้าเป็นตัวสุดท้ายจะไม่ต่อด้วย,
+                                mDate = mDate.concat(moment(b).format("DD/MM/YYYY"));
+                            } else {
+                                mDate = mDate.concat(moment(b).format("DD/MM/YYYY"), "|");
+                            }
+                
+
+                    b.add(1, 'days');
+
+                    }                 
+                    table.search(mDate,true,false).draw();
+
+                    
+                    
                 } );
-
 
     } );
     </script>

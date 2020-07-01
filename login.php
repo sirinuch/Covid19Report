@@ -11,7 +11,7 @@ session_start();
  
                   $result = mysqli_query($con,$sql);
                   
-                  Header("Location: timeline.php");
+                  Header("Location: newtable.php");
  
         }else{
  
