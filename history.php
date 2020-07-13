@@ -52,9 +52,16 @@
     <div class="py-2">
         <!-- ใส่ PHP Code ของหน้าทั้งหมดทั้งมวลตรงนี้นะ -->
         <div class="container-fluid" >
-  <h2>รายชื่อการเดินทางของ <?php  echo $_GET["Hname"]; ?></h2>
+  <h2>รายชื่อประวัติการเดินทางของ <?php  echo $_GET["Hname"]; ?></h2>
  
 </br></br>
+<div class="modal-body">
+                    <label for="enddate">วันที่</label>
+                    <input type="date" id="enddate">
+
+                    <label for="startdate">ถึง </label>
+                    <input type="date" id="startdate">
+</div> 
 <div class="display" style="">
 <table id="example" class="display" style="width:100%">
 <thead>
@@ -105,15 +112,86 @@
        </tbody>
 </table>
 </div>
-    <script>
-    $(document).ready(function() {
-        var table = $('#example').DataTable({
-            orderCellsTop: true,
-            fixedHeader: true,
-            "order": [[ 3, "desc" ]]
-        } );
+<script>
+
+Date.prototype.stdate = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+});
+
+Date.prototype.endate = (function() {
+    var dateoutput = new Date();
+    dateoutput.setDate(dateoutput.getDate() - 14);
+    return dateoutput.toJSON().slice(0,10);
+});
+
+
+$(document).ready(function() {
+
+$('#example tbody').on( 'click', 'tr', function () {
+// console.log( table.row( this ).data() );
+$rowdata = table.row( this ).data()
+
+table.search( $rowdata['1'].concat(" ", $rowdata['2']) ).draw();
+
+// console.log($rowdata['0']+ $rowdata['1']+$rowdata['2']);
+
+} );
+
+var table = $('#example').DataTable( {
+orderCellsTop: true,
+fixedHeader: true,
+"order": [[ 3, "desc" ]]
+
+} );  
+
+     
+    $('#startdate').val(new Date().stdate());
+    $('#enddate').val(new Date().endate());
+
+    $('#startdate, #enddate').on('change', function() {
+        var startdate = document.getElementById("startdate").value;
+        var enddate = document.getElementById("enddate").value;
+
+        var startdateaf = moment(startdate , "YYYY-MM-DD").format("DD/MM/YYYY");
+        var enddateaf = moment(enddate , "YYYY-MM-DD").format("DD/MM/YYYY");
+        
+        //moment หา array ปี/เดือน/วัน
+        var a = moment(moment(startdate , "YYYY-MM-DD").toArray());
+        var b = moment(moment(enddate , "YYYY-MM-DD").toArray());
+
+        var mDate = "";
+
+        var diffday = a.diff(b, 'days');
+        var stdate;
+        
+            if(diffday< 0){
+                // แจ้งเตื่อน วันที่ เริ่ม น้อยกว่า จบ
+                alert("กรุณาเลือกวันที่ให้ถูกต้อง");
+            }
+        for(stdate = 0 ;stdate <= diffday ; stdate++){
+
+        // console.log(moment(b).format("DD/MM/YYYY") );
+
+                if (stdate == diffday) { //ถ้าเป็นตัวสุดท้ายจะไม่ต่อด้วย,
+                    mDate = mDate.concat(moment(b).format("YYYY-MM-DD"));
+                } else {
+                    mDate = mDate.concat(moment(b).format("YYYY-MM-DD"), "|");
+                }
+    
+
+        b.add(1, 'days');
+
+        }                 
+        table.search(mDate,true,false).draw();
+
+        
+        
     } );
-    </script>
+
+} );
+</script>
     
     </div>
 </div>

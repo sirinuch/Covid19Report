@@ -51,7 +51,7 @@
     <div class="py-2">
        
         <div class="container-fluid" >
-  <h2>รายชื่อสมาชิกทั้งหมด</h2>
+  <h2>ประวัติการเดินทางของนักศึกษาทั้งหมด</h2>
   <div class="modal-body">
                     <label for="enddate">วันที่</label>
                     <input type="date" id="enddate">
@@ -59,10 +59,10 @@
                     <label for="startdate">ถึง </label>
                     <input type="date" id="startdate">
   
-  location
+  <!-- location
       <select name="location" id="location" size="">
         <option value="all">all</option>
-      </select>   
+      </select>    -->
 
     </div> 
 <!-- <button type="button" onclick="searchFunction()">search</button> -->
@@ -142,15 +142,17 @@ function selectFunction() {
            ?>
        </tbody>
 </table>
+<p id="demo"></p>
 </div>
     <script>
-
+                  // date ปัจจุบัน
             Date.prototype.stdate = (function() {
                 var local = new Date(this);
                 local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
                 return local.toJSON().slice(0,10);
             });
             
+              // date ย้อนหลังได้ทั้งหมด 14 วัน
             Date.prototype.endate = (function() {
                 var dateoutput = new Date();
                 dateoutput.setDate(dateoutput.getDate() - 14);
@@ -206,9 +208,9 @@ function selectFunction() {
                     // console.log(moment(b).format("DD/MM/YYYY") );
 
                             if (stdate == diffday) { //ถ้าเป็นตัวสุดท้ายจะไม่ต่อด้วย,
-                                mDate = mDate.concat(moment(b).format("DD/MM/YYYY"));
+                                mDate = mDate.concat(moment(b).format("YYYY-MM-DD"));
                             } else {
-                                mDate = mDate.concat(moment(b).format("DD/MM/YYYY"), "|");
+                                mDate = mDate.concat(moment(b).format("YYYY-MM-DD"), "|");
                             }
                 
 
@@ -219,6 +221,9 @@ function selectFunction() {
 
                     
                     
+                    var info = table.page.info();
+                    console.log(info);
+                    document.getElementById("demo").innerHTML = "จำนวน" + " " + info.recordsDisplay + " " + "คน";
                 } );
 
     } );

@@ -169,13 +169,14 @@
         <script>
 
 
-
+                    // date ปัจจุบัน
             Date.prototype.stdate = (function() {
                 var local = new Date(this);
                 local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
                 return local.toJSON().slice(0,10);
             });
             
+                    // date ย้อนหลังได้ทั้งหมด 14 วัน
             Date.prototype.endate = (function() {
                 var dateoutput = new Date();
                 dateoutput.setDate(dateoutput.getDate() - 14);
@@ -220,6 +221,7 @@
 
                     var mDate = "";
 
+                        //startdate enddate ห่างกันเท่าไหร่
                     var diffday = a.diff(b, 'days');
                     var stdate;
                     
@@ -245,6 +247,10 @@
 
                     
                     table2.search(mDate,true,false).draw();
+
+                    var info = table2.page.info();
+                    document.getElementById("demo").innerHTML = "จำนวน" + " " + info.recordsDisplay + " " + "คน";
+
                     
                 } );
 
@@ -407,8 +413,10 @@
                         exposure.push(riskdata[z].name);
                     }
 
+
+                    var info = table2.page.info();
+                    document.getElementById("demo").innerHTML = "จำนวน" + " " + info.recordsDisplay + " " + "คน";
                     let unique = exposure.filter(onlyUnique);
-                    document.getElementById("demo").innerHTML = "จำนวน" + " " + --unique.length + " " + "คน";
 
 
                 }
